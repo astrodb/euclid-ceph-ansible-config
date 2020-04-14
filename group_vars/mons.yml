@@ -1,0 +1,19 @@
+---
+crush_rule_config: true
+
+crush_rule_cam:
+  name: cam
+  root: cam
+  type: host
+  default: false
+crush_rule_ral:
+  name: ral
+  root: ral
+  type: host
+  default: false
+
+crush_rules:
+  - "{{ crush_rule_cam }}"
+  - "{{ crush_rule_ral }}"
+
+create_crush_tree: false

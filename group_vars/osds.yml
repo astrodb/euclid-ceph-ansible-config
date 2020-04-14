@@ -1,0 +1,8 @@
+---
+osd_scenario: lvm
+
+lvm_volumes:
+  - data: osd
+    data_vg: ceph
+
+osds_per_device: 1
