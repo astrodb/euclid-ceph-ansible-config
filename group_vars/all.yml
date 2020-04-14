@@ -13,9 +13,15 @@ public_network: "{{ ceph_intra_cidr }}"
 cluster_network: "{{ ceph_intra_cidr }}"
 
 osd_objectstore: bluestore
+is_hci: true
+hci_safety_factor: 0.15
+
+cephfs: cephfs # name of the ceph filesystem
+cephfs_data: cephfs_data # name of the data pool for a given filesystem
+cephfs_metadata: cephfs_metadata # name of the metadata pool for a given filesystem
 
 ceph_conf_overrides:
    global:
-      osd_pool_default_pg_num: 32
-      osd_pool_default_size: 1
+      osd_pool_default_pg_num: 1024
+      osd_pool_default_size: 2
       osd_pool_default_min_size: 1

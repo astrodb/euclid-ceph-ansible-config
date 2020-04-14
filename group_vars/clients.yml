@@ -1,0 +1,33 @@
+---
+user_config: true
+
+pool_euclid_cam:
+  name: "euclid_cam"
+  pg_num: 512
+  pgp_num: 512
+  rule_num: "replicated_cam"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: 10000000
+  size: 1
+pool_euclid_ral:
+  name: "euclid_ral"
+  pg_num: 512
+  pgp_num: 512
+  rule_num: "replicated_ral"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: 10000000
+  size: 1
+
+pools:
+  - "{{ pool_euclid_cam }}"
+  - "{{ pool_euclid_ral }}"
+
+keys:
+  - name: client.euclid
+    caps:
+      mon: "allow r"
+      osd: "allow *"
+      mds: "allow rwp"
+    mode: "{{ ceph_keyring_permissions }}"
