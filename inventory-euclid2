@@ -1,0 +1,92 @@
+# Ansible Shade uses OpenStack clients running locally
+[openstack]
+localhost ansible_connection=local ansible_python_interpreter=python
+
+[alaska:children]
+openstack
+cluster
+
+[cluster:children]
+euclid2_gw
+euclid2_login
+euclid2_control
+euclid2_compute
+euclid2_proxy
+
+[euclid2_gw]
+euclid2-gw-0 ansible_host=130.246.215.191
+
+[euclid2_gw:vars]
+ansible_user=mholliman
+
+[euclid2_login]
+euclid2-login-0 ansible_host=130.246.215.152
+
+[euclid2_login:vars]
+ansible_user=mholliman
+ansible_ssh_common_args='-o ProxyJump=mholliman@130.246.215.191'
+
+[euclid2_control]
+euclid2-control-0 ansible_host=192.168.246.17
+
+[euclid2_control:vars]
+ansible_user=mholliman
+ansible_ssh_common_args='-o ProxyJump=mholliman@130.246.215.191'
+
+[euclid2_compute]
+euclid2-compute-0 ansible_host=192.168.246.19
+euclid2-compute-1 ansible_host=192.168.246.43
+euclid2-compute-2 ansible_host=192.168.246.21
+euclid2-compute-3 ansible_host=192.168.246.34
+
+[euclid2_compute:vars]
+ansible_user=mholliman
+ansible_ssh_common_args='-o ProxyJump=mholliman@130.246.215.191'
+
+[euclid2_proxy]
+euclid2-proxy-0 ansible_host=192.168.246.12
+
+[euclid2_proxy:vars]
+ansible_user=mholliman
+ansible_ssh_common_args='-o ProxyJump=mholliman@130.246.215.191'
+
+# Specific roles for cluster deployment assignments
+[cluster_ceph_client:children]
+euclid2_login
+euclid2_control
+euclid2_compute
+
+[cluster_control:children]
+euclid2_control
+
+[cluster_login:children]
+euclid2_login
+
+[cluster_batch:children]
+euclid2_compute
+
+[cluster_cvmfs_proxy:children]
+euclid2_proxy
+
+[cluster_ceph_mon:children]
+euclid2_login
+euclid2_control
+euclid2_gw
+
+[cluster_ceph_osd:children]
+euclid2_compute
+
+[mons:children]
+cluster_ceph_mon
+
+[osds:children]
+cluster_ceph_osd
+
+[mgrs:children]
+
+[mdss:children]
+euclid2_login
+
+[clients:children]
+cluster_ceph_clients
+
